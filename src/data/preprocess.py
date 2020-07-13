@@ -16,21 +16,25 @@ def label_encoder(df):
     return df
 
 
-def encode_categorical(df):
+def encode_categorical(df_train, df_test):
     l_encoder_count = 0
     o_h_encoder_count = 0
-    for column in df:
-        if df[column].dtype == "object":
+    for column in df_train:
+        if df_train[column].dtype == "object":
 
-            if len(list(df[column].unique())) <= 2:
-                df[column] = label_encoder(df[column])
+            if len(list(df_train[column].unique())) <= 2:
+                df_train[column] = label_encoder(df_train[column])
+                df_test[column] = label_encoder(df_test[column])
                 l_encoder_count += 1
-            elif len(list(df[column].unique())) > 2:
-                df[column] = one_hot_encoder(df[column])
+            elif len(list(df_train[column].unique())) > 2:
+                df_train[column] = one_hot_encoder(df_train[column])
+                df_test[column] = one_hot_encoder(df_test[column])
                 o_h_encoder_count += 1
 
     print("Total of %s columns transformed with Label Encoder" % l_encoder_count)
     print("Total of %s columns transformed with One Hot Encoder" % o_h_encoder_count)
+
+    return df_train, df_test
 
 
 def data_cleaning_application(df):
@@ -46,12 +50,16 @@ WICHTIG : ERST DIE TARGET NOCH DROPPEN UND DIE DATEIEN KOPIEREN
 SONST IMPUTET ER DIE TARGETS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 """
 
-def impute_nan_values(df):
-    imputer = SimpleImputer(strategy = 'median')
-    imputer.fit(df)
-    df = imputer.transform(df)
 
-def scale_minmax(df):
-    scaler = MinMaxScaler(feature_range = (0,1))
-    scaler.fit(df)
-    df = scaler.transform(df)
+def impute_scale(df_train, df_test):
+    imputer = SimpleImputer(strategy='median')
+    imputer.fit(df_train)
+    df_train = imputer.transform(df_train)
+    df_test = imputer.transform(df_test)
+
+    scaler = MinMaxScaler(feature_range=(0, 1))
+    scaler.fit(df_train)
+    df_train = scaler.transform(df_train)
+    df_test = scaler.transform(df_test)
+
+    return df_train, df_test
