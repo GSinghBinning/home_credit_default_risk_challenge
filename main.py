@@ -22,10 +22,9 @@ test_data = fe.add_ratio_features(test_data)
 train_data.to_csv(os.path.join(PROCESSED_DIRECTORY, "train_set_processed.csv"), index=False)
 test_data.to_csv(os.path.join(PROCESSED_DIRECTORY, "test_set_processed.csv"), index=False)
 
-# Predicting values through a Light Gradient Boosting model
-submission = lgbm.model(train_data, test_data)
+# Predicting values through a Light Gradient Boosting model with the option to load the pretrained model
+# with the additional parameter: load_model = True
+submission = lgbm.lightgbm_model(train_data, test_data, load_model = False)
 
 # Saving the submission data into a corresponding csv to upload the predictions
-submission.to_csv(os.path.join('models\\submissions\\', 'lgbm_model_params_impute_scale.csv'), index=False)
-
-
+submission.to_csv(os.path.join('models\\submissions\\', 'lgbm_model_predictions.csv'), index=False)
