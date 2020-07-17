@@ -39,27 +39,24 @@ def encode_categorical(df_train, df_test):
 
 def data_cleaning_application(df):
     df = df[df['CODE_GENDER'] != 'XNA']
-    df['DAYS_EMPLOYED'].replace(365423, np.nan, inplace=True)
+    df['DAYS_EMPLOYED'].replace(365243, np.nan, inplace=True)
+    print("outlier and faulty values has been processed")
+    return df
 
 
-"""
-WICHTIG : ERST DIE TARGET NOCH DROPPEN UND DIE DATEIEN KOPIEREN
-
-
-
-SONST IMPUTET ER DIE TARGETS !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-"""
-
-
-def impute_scale(df_train, df_test):
+def impute(df_train, df_test):
     imputer = SimpleImputer(strategy='median')
     imputer.fit(df_train)
     df_train = imputer.transform(df_train)
     df_test = imputer.transform(df_test)
+    print("NAN values imputed with Simple Imputer - strategy = median")
+    return df_train, df_test
 
+
+def scale(df_train, df_test):
     scaler = MinMaxScaler(feature_range=(0, 1))
     scaler.fit(df_train)
     df_train = scaler.transform(df_train)
     df_test = scaler.transform(df_test)
-
+    print("MinMaxScaler transformed the data")
     return df_train, df_test

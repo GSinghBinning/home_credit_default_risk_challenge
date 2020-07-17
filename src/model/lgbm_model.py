@@ -1,10 +1,11 @@
 import numpy as np
 import pandas as pd
 from src.data.preprocess import encode_categorical
-from src.data.preprocess import impute_scale
+from src.data import preprocess as pp
 from sklearn.model_selection import KFold
 import lightgbm as lgb
 import gc
+import os
 
 
 def lightgbm_model(training_features, test_features, n_folds=5, load_model=False):
@@ -33,8 +34,9 @@ def lightgbm_model(training_features, test_features, n_folds=5, load_model=False
     training_features, test_features = training_features.align(test_features, join='inner', axis=1)
 
     # Encoding categorical values and imputing and scaling the dataframes
-    training_features, test_features = encode_categorical(training_features, test_features)
-    training_features, test_features = impute_scale(training_features, test_features)
+    training_features, test_features = pp.encode_categorical(training_features, test_features)
+    training_features, test_features = pp.impute(training_features, test_features)
+    training_features, test_features = pp.scale(training_features, test_features)
 
     # Create the kfold object
     k_fold = KFold(n_splits=n_folds, shuffle=True, random_state=50)
@@ -69,11 +71,11 @@ def lightgbm_model(training_features, test_features, n_folds=5, load_model=False
             best_iteration = classifier.best_iteration_
 
             # Make predictions
-            prediction_test += classifier.predict_proba(test_features, num_iteration=best_iteration)[:,
-                               1] / k_fold.n_splits
+            prediction_test += classifier.predict_proba(test_features,
+                                                        num_iteration=best_iteration)[:, 1] / k_fold.n_splits
 
             # Save the model
-            classifier.booster_.save_model('models/lgbm_classifier.txt', num_iteration=best_iteration)
+            classifier.booster_.save_model('./model/lgbm_classifier.txt', num_iteration=best_iteration)
 
             # Cleaning up memory
             gc.enable()
@@ -82,8 +84,11 @@ def lightgbm_model(training_features, test_features, n_folds=5, load_model=False
 
     # the elif condition to make it possible to load a pretrained model
     elif load_model:
-        bst = lgb.Booster(model_file='models/lgbm_classifier.txt')
-        prediction_test = bst.predict(test_features)
+        if os.path.exists("./model/lgbm_classifier.txt"):
+            bst = lgb.Booster(model_file='./model/lgbm_classifier.txt')
+            prediction_test = bst.predict(test_features)
+        else:
+            print("There is no pretrained and saved model, please set load_model= False")
 
     # create the result dataframe for the submission
     submit = pd.DataFrame({'SK_ID_CURR': test_id, 'TARGET': prediction_test})
