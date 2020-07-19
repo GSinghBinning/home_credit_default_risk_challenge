@@ -1,0 +1,9 @@
+dload~=0.6
+pandas~=1.0.5
+numpy~=1.19.0
+sklearn~=0.0
+scikit-learn~=0.23.1
+lightgbm~=2.3.1
+pytest~=5.4.3
+datatest~=0.9.6
+setuptools~=41.2.0

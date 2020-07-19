@@ -38,10 +38,11 @@ def encode_categorical(df_train, df_test):
 
 
 def data_cleaning_application(df):
-    df = df[df['CODE_GENDER'] != 'XNA']
-    df['DAYS_EMPLOYED'].replace(365243, np.nan, inplace=True)
+    df = df.loc[df['CODE_GENDER'] != 'XNA']
+    df2 = df.copy()
+    df2['DAYS_EMPLOYED'].replace(365243, np.nan, inplace=True)
     print("outlier and faulty values has been processed")
-    return df
+    return df2
 
 
 def impute(df_train, df_test):

@@ -4,6 +4,8 @@ Solving the Kaggle Challenge of Home Credit default risk
 TO DO : 
 weitere tests für impute etc.
 
+Wann Value wann Assertion
+
 
 
 
@@ -15,3 +17,6 @@ pip install - e . für pytest
 url path der dat files
 
 die error message für data cleaning
+
+die pakete die installiert werden müssen
+

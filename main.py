@@ -10,15 +10,15 @@ PROCESSED_DIRECTORY = 'data/processed/'
 SUBMISSION_DIRECTORY = 'model/submissions/'
 
 # if the data is not available in the data/raw directory, this function loads it from Kaggle
-load.load_dataset(RAW_DIRECTORY)
+load.download_dataset(RAW_DIRECTORY)
 
 # read in the csv files into dataframes
-train_data, test_data = load.read_test_train(RAW_DIRECTORY)
+train_data, test_data = load.read_test_train(RAW_DIRECTORY, 'application_train.csv', 'application_test.csv')
 
 # apply data cleaning by erasing faulty values and outliers
 
 """
-THIS CREATES AN ERROR MESSAGE - COPY INSTEAD OF 
+data_cleaning CREATES AN ERROR MESSAGE 
 """
 # train_data = pp.data_cleaning_application(train_data)
 # test_data = pp.data_cleaning_application(test_data)
