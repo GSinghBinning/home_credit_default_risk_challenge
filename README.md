@@ -61,6 +61,10 @@ without going too much in detail. So instead of using all the csv files and do f
 putting all this data into the model building, I focused on the _application..csv_ files and did every 
 step, like exploratory analysis, data cleaning and feature engineering in an exemplary manner. 
 
+**Info for the LGBM Model**: the parameters for the model have been calculated with a Bayesian Optimizer in a Kaggle Notebook, to use the computing
+power of the Kaggle notebooks. Also the code of the bayesian optimizer has not been added to this project to keep the simplicity.
+If this code is also needed, I can provide it. 
+
 The focus was to provide a simple understandable project with good structure, unittesting and covering the main concepts of ML models,
 like cleaning, feature engineering, encoding, scaling, imputing and modeling. 
 Also one part was to show working with git and github, so a dev branch was established and regularly commited to. 
