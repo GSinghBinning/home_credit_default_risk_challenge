@@ -1,10 +1,7 @@
 import dload
 import os
 import pandas as pd
-
-
-
-dataset_url = "https://storage.googleapis.com/kaggle-competitions-data/kaggle-v2/9120/860599/bundle/archive.zip?GoogleAccessId=web-data@kaggle-161607.iam.gserviceaccount.com&Expires=1594819922&Signature=HERl109nv67QCae9gXcex2zL1hs4iWWkjHUZUGXngverIdShIWVPUzdThhmDibjQpZ7WAUCj3MhLjKKZG%2FTp5y3f8Ne2DnSOA97jHE7RmZ%2FbA0dLsJRkEP3dQErGNCtoUbP85uwejNauxhcjTyPIj%2FeuBpZ0WJCIM%2BYN4Wggy0cwrNi2jLRHIomV79wCtAImCe0LMJ%2BeEY4PnnBXRrDcVVee0Ldl9PMboLmDyX5yA1c0nTigsg%2BVS2mQvc7d7zMKoA3kZGXItJHYfylZgH4mdvn9Z%2BFYN7hWJdGx1gjuIOyEwQBcHJN8bC2eXYFUSHb2FLPa0i9a6Vuijk6jLcQSEQ%3D%3D&response-content-disposition=attachment%3B+filename%3Dhome-credit-default-risk.zip"
+import constants as c
 
 
 def download_dataset(directory_path, train_set='application_train.csv', test_set='application_test.csv'):
@@ -16,7 +13,8 @@ def download_dataset(directory_path, train_set='application_train.csv', test_set
     # checks if the two files provided through train_set and test_set are available
     if not (os.path.exists(os.path.join(directory_path, test_set)) and
             os.path.exists(os.path.join(directory_path, train_set))):
-        dload.save_unzip(dataset_url, directory_path, delete_after=True)
+        print("Downloading the datasets from Kaggle ...")
+        dload.save_unzip(c.DATASET_URL, directory_path, delete_after=True)
     else:
         # if the data exists just prints this message
         print("Data is already in directory")
